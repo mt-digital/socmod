@@ -229,6 +229,7 @@ success_bias_interact <- function(learner, teacher, model) {
   }
 }
 
+
 ### -------- CONTAGION -----------
 
 #' Contagion-based partner selection

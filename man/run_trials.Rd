@@ -9,6 +9,7 @@ run_trials(
   n_trials_per_param = 10,
   stop = 10,
   .progress = TRUE,
+  observe = "behavior",
   syncfile = NULL,
   overwrite = FALSE,
   ...
