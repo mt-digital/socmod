@@ -79,9 +79,9 @@ ModelDynamics <- R6::R6Class(
 #' 
 #' @export
 make_model_dynamics <- function(partner_selection, 
-                                   interaction, 
-                                   model_step = NULL, 
-                                   label = "unlabelled") {
+                                interaction, 
+                                model_step = NULL, 
+                                label = "unlabelled") {
   return (
     ModelDynamics$new(
       partner_selection, interaction, model_step, label
@@ -104,6 +104,74 @@ dummy_model_dynamics <- function() {
 }
 
 
+
+#' Bivalent social influence
+#' 
+#' negative = anti-consensus/repulsion
+#' positive = consensus
+#' zero = ignore
+#'
+#' @param focal_agent 
+#' @param partner 
+#' @param model 
+#'
+#' @returns
+#' @export
+social_influence <- function(focal_agent, partner, model) {
+  
+  dij <- mean(abs(focal_agent$opinions - partner$opinions))
+  wij <- 1.0 - dij
+  
+  delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
+  
+  alpha <- model$get_parameter("alpha")
+  stubbornness <- s_latent(focal_agent$opinions, alpha)
+  
+  focal_agent$stubbornness <- stubbornness
+  focal_agent$next_opinions <- focal_agent$opinions + delta_ok * stubbornness
+  
+  return(invisible(focal_agent))
+}
+
+
+#' select randomly either with self-influence or nah
+#'
+#' @export
+well_mixed_selection <- function(focal, model) { 
+  model$get_parameter("n_agents")
+  if (model$self_influence) {
+    ids_to_sample <- model$get_parameter("n_agents")
+  } else {
+    
+    agents_to_sample <- model$agents
+  }
+  
+  partner <- sample(agents_to_sample, 1)
+  
+  return(partner)
+}
+
+#' Basic stepper for opinions
+#'
+#' @export
+step_opinions <- function(model) {
+  purrr::walk(model$agents, ~ .x$step_opinions())
+  
+  return(NULL)
+}
+
+
+#' Basic model dynamics for opinions
+#' 
+#' @export
+opinion_dynamics <- make_model_dynamics(
+  partner_selection = well_mixed_selection,
+  interaction = social_influence,
+  model_step = step_opinions,
+  label = "Well-mixed opinion dynamics"
+)
+
+
 #' A generic method for iterating a learning model, setting the current 
 #' behavior and fitness to be whatever was identified as the next behavior
 #' and fitness.
@@ -121,6 +189,9 @@ iterate_learning_model <- function(model) {
 #' @export
 #' 
 learning_model_step <- iterate_learning_model
+#' Yet another potential alias for iterate_learning_model to match step_opinions
+#' @export
+step_learning <- iterate_learning_model
 
 
 
@@ -168,7 +239,7 @@ frequency_bias_interact <- function(learner, ., model) {
     selected <- 
       sample(behavior_counts$curr_behavior, 1, 
              prob = behavior_counts$selection_prob)[[1]]
-  
+    
     learner$set_next_behavior(as.character(selected))
   }
 }
@@ -196,7 +267,7 @@ success_bias_select_teacher <- function(learner, model) {
   # check if the learner is stubborn this time, i.e., if a random uniform draw is
   # greater than stubbornness.
   if (is.null(stubbornness) || (runif(1) > stubbornness)) {
-  
+    
     learner$get_neighbors()$sample(
       weights = \(a) {
         fitness <- a$get_fitness()
@@ -265,12 +336,12 @@ contagion_partner_selection <- function(learner, model) {
 #' print(learner$get_next_behavior())  # expect "Adaptive"
 #' @export
 contagion_interaction <- function(learner, teacher, model) {
-
+  
   # Extract relevant parameters from the model.
   adoption_rate <- model$get_parameter("adoption_rate")
   legacy_behavior <- model$get_parameter("legacy_behavior")
   adaptive_behavior <- model$get_parameter("adaptive_behavior")
-
+  
   assertthat::assert_that(
     !is.null(adoption_rate), 
     msg = "Auxiliary model parameter adoption_rate must be defined for contagion interaction."
@@ -281,7 +352,7 @@ contagion_interaction <- function(learner, teacher, model) {
   if (is.null(adaptive_behavior)) {
     adaptive_behavior <- "Adaptive"
   }
-
+  
   if ((learner$get_behavior() == legacy_behavior) && 
       (teacher$get_behavior() == adaptive_behavior) && 
       (runif(1) < adoption_rate)) {
@@ -299,12 +370,12 @@ contagion_interaction <- function(learner, teacher, model) {
 #' @return None. Updates agent behaviors.
 #' @export
 contagion_model_step <- function(model) {
-
+  
   # mps <- model$get_parameters()
   drop_rate <- model$get_parameter("drop_rate")
   legacy_behavior <- model$get_parameter("legacy_behavior")
   adaptive_behavior <- model$get_parameter("adaptive_behavior")
-
+  
   if (!is.null(drop_rate) && (drop_rate > 0)) {
     for (i in seq_along(model$agents)) {
       agent <- model$get_agent(i)
@@ -325,7 +396,7 @@ contagion_model_step <- function(model) {
 #' @export
 success_bias_model_dynamics <- make_model_dynamics(
   success_bias_select_teacher, success_bias_interact, 
-  learning_model_step, label = "Success-biased"
+  step_learning, label = "Success-biased"
 )
 
 
@@ -334,7 +405,7 @@ success_bias_model_dynamics <- make_model_dynamics(
 #' @export
 frequency_bias_model_dynamics <- make_model_dynamics(
   frequency_bias_select_teacher, frequency_bias_interact, 
-  learning_model_step, label = "Frequency-biased"
+  step_learning, label = "Frequency-biased"
 )
 
 
@@ -344,4 +415,71 @@ frequency_bias_model_dynamics <- make_model_dynamics(
 contagion_model_dynamics <- make_model_dynamics(
   contagion_partner_selection, contagion_interaction, 
   contagion_model_step, label = "Contagion"
+)
+
+
+#' Bivalent social influence
+#' 
+#' negative = anti-consensus/repulsion
+#' positive = consensus
+#' zero = ignore
+#'
+#' @param focal_agent 
+#' @param partner 
+#' @param model 
+#'
+#' @returns
+#' @export
+social_influence <- function(focal_agent, partner, model) {
+  
+  dij <- mean(abs(focal_agent$opinions - partner$opinions))
+  wij <- 1.0 - dij
+  
+  delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
+  
+  alpha <- model$get_parameter("alpha")
+  stubbornness <- s_latent(focal_agent$opinions, alpha)
+  
+  focal_agent$stubbornness <- stubbornness
+  focal_agent$next_opinions <- focal_agent$opinions + delta_ok * stubbornness
+  
+  return(invisible(focal_agent))
+}
+
+
+#' select randomly either with self-influence or nah
+#'
+#' @export
+well_mixed_selection <- function(focal, model) { 
+  model$get_parameter("n_agents")
+  if (model$self_influence) {
+    ids_to_sample <- model$get_parameter("n_agents")
+  } else {
+    
+    agents_to_sample <- model$agents
+  }
+  
+  partner <- sample(agents_to_sample, 1)
+  
+  return(partner)
+}
+
+#' Basic stepper for opinions
+#'
+#' @export
+step_opinions <- function(model) {
+  purrr::walk(model$agents, ~ .x$step_opinions())
+  
+  return(NULL)
+}
+
+
+#' Basic model dynamics for opinions
+#' 
+#' @export
+opinion_dynamics <- make_model_dynamics(
+  partner_selection = well_mixed_selection,
+  interaction = social_influence,
+  model_step = step_opinions,
+  label = "Well-mixed opinion dynamics"
 )

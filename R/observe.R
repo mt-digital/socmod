@@ -1,8 +1,4 @@
-#' Observation functions for agent-based models
-#'
-#' These functions provide a standardized way to record model state
-#' during trials. The dispatcher selects the appropriate function
-#' based on the `observe` argument.
+#' Function to gather behavior adoption data at a single model `step`
 #'
 #' @param model An AgentBasedModel instance
 #' @param step Current simulation step (integer)
@@ -11,29 +7,63 @@
 #'
 #' @export
 observe_behavior <- function(model, step, label = NULL, ...) {
-  tibble::tibble(
+  observation_row <- tibble::tibble(
     Step = step,
     agent = vapply(model$agents, \(a) a$name, character(1)),
     Behavior = vapply(model$agents, \(a) as.character(a$behavior_current), character(1)),
     Fitness  = vapply(model$agents, \(a) a$fitness_current, numeric(1)),
     label = label
   )
+  
+  return(observation_row)
 }
 
-# Stub for latent opinions (future expansion in v0.3.0)
-#' @export
-observe_latent <- function(model, step, label = NULL, ...) {
-  stop("Observation type 'latent' not implemented in v0.2.5")
-}
 
-# Dispatcher
+#' Function to gather opinion and stubbornness data at a single model `step`
+#'
+#' @param model An AgentBasedModel instance
+#' @param step Current simulation step (integer)
+#' @param label Optional label string for the trial
+#' @param ... Additional arguments for future observation types
+#'
 #' @export
-observe_dispatch <- function(model, type = "behavior", step, label = NULL, ...) {
-  switch(
-    type,
-    behavior = observe_behavior(model, step = step, label = label, ...),
-    latent   = observe_latent(model, step = step, label = label, ...),
-    stop(sprintf("Unknown observation type: %s", type))
+observe_opinion <- function(model, step, label = NULL, ...) {
+  observation_row <- tibble::tibble(
+    Step = step,
+    agent = vapply(model$agents, \(a) a$name, character(1)),
+    Opinions = vapply(model$agents, \(a) as.numeric(a$behavior_current)),
+    Stubbornness = vapply(model$agents, \(a) as.numeric(a$stubbornness)),
+    label = label
   )
+  
+  return(observation_row)
 }
 
+
+Observer <- R6::R6Class(
+  "Observer",
+  public = list(
+    observe_fn = NULL,
+    label = NULL,
+    
+    initialize = function(observe_fn, label = NULL) {
+      self$observe_fn <- observe_fn
+      self$label <- label
+      return(invisible(self))
+    },
+    
+    observe = function(model, step, obs_label = NULL,...) {
+      return(self$observe_fn(model, step, label = obs_label, ...))
+    }
+  )
+)
+
+
+new_behavior_observer <- function(observer_label = "behavior") {
+  return(Observer$new(observe_behavior, observer_label))
+}
+
+
+new_opinion_observer <- function(observer_label = "opinion") {
+  return(Observer$new(observe_opinion, observer_label))
+}

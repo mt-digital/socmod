@@ -2,7 +2,7 @@
 % Please edit documentation in R/observe.R
 \name{observe_behavior}
 \alias{observe_behavior}
-\title{Observation functions for agent-based models}
+\title{Function to gather behavior adoption data at a single model \code{step}}
 \usage{
 observe_behavior(model, step, label = NULL, ...)
 }
@@ -16,7 +16,5 @@ observe_behavior(model, step, label = NULL, ...)
 \item{...}{Additional arguments for future observation types}
 }
 \description{
-These functions provide a standardized way to record model state
-during trials. The dispatcher selects the appropriate function
-based on the \code{observe} argument.
+Function to gather behavior adoption data at a single model \code{step}
 }

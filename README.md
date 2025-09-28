@@ -6,9 +6,12 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 `socmod` streamlines the development of computational models of social
-change, focused on agent-based modeling. It is a work-in-progress. For
+change, focused on agent-based modeling. Social change is comprised of
+behavior and opinion change. Each is represented here. Note the code is
+at v0.2.6, meaning it’s a work-in-progress that’s subject to change. For
 questions or comments please [open an
 issue](https://github.com/SocSci-for-Sustainability/socmod/issues).
+Thanks!
 
 ## Quickstart examples
 
@@ -83,7 +86,7 @@ beginning with a user-defined model generation function:
 
 ``` r
 abm_gen <- function(params) {
-  params$graph <- make_small_world(params$n_agents, 6, 0.5)
+  params$graph <- make_full_graph(params$n_agents, directed = FALSE)
   return (do.call(make_abm, params) %>%
             initialize_agents(
               initial_prevalence = params$initial_prevalence,
@@ -148,13 +151,13 @@ six minutes.
 adaptive_fitness_vals <- c(0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5)
 trials <-
   run_trials(
-    abm_gen_fA_experiment,
+    abm_gen,
     n_trials_per_param = 20,
     stop = socmod::fixated,
     syncfile = "man/build/readme-demo-cpu-experiment.RData",
     n_agents = 100,
     .progress = T,
-    # overwrite = T,
+    overwrite = F,
     initial_prevalence = 0.1,
     adaptive_fitness = adaptive_fitness_vals
   )

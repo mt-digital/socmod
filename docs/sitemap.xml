@@ -16,6 +16,7 @@
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/ModelDynamics.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/ModelParameters.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/Neighbors.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/OpinionAgent.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/SOCMOD_PALETTE.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/SOCMOD_PALETTE_CVD.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/SOCMOD_PLOT_PALETTE.html</loc></url>
@@ -53,6 +54,8 @@
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/make_small_world.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/not_adjacent.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/observe_behavior.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/observe_opinion.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/opinion_dynamics.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/plot_adoption.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/plot_friendship_paradox.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/plot_homophilynet.html</loc></url>
@@ -64,7 +67,10 @@
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/run_trial.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/run_trials.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/simulate_feld_1991.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/social_influence.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/socmod-package.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/step_learning.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/step_opinions.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/success_bias_interact.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/success_bias_learning_strategy.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/success_bias_model_dynamics.html</loc></url>
@@ -73,5 +79,6 @@
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/summarise_by_parameters.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/summarise_outcomes.html</loc></url>
 <url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/summarise_prevalence.html</loc></url>
+<url><loc>https://SocSci-for-Sustainability.github.io/socmod/reference/well_mixed_selection.html</loc></url>
 </urlset>
 

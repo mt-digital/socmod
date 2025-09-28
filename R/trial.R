@@ -37,7 +37,7 @@ Trial <- R6::R6Class(
     #' @param adaptive_behavior The behavior treated as "adaptation success"
     run = function(
         stop = 50, legacy_behavior = "Legacy", 
-        adaptive_behavior = "Adaptive", observe = "behavior") {
+        adaptive_behavior = "Adaptive", observer = new_behavior_observer()) {
       
       step <- 0
 
@@ -69,12 +69,10 @@ Trial <- R6::R6Class(
           model_step(self$model)
         }
 
-        # --- collect observations via dispatcher ---
-        obs_list[[step + 1]] <- observe_dispatch(
+        # --- `observer` `observes`behaviors (default) or opinions ---
+        obs_list[[step + 1]] <- observer$observe(
           self$model,
-          type = observe,
-          step = step,
-          label = self$label
+          step = step
         )
 
         # --- stopping condition ---
@@ -87,7 +85,7 @@ Trial <- R6::R6Class(
       self$observations <- dplyr::bind_rows(obs_list)
 
       # if we observe behavior, identify whether this is adaptive success or not
-      if (observe == "behavior") {
+      if (observer$label == "behavior") {
         behaviors <- unlist(
           purrr::map(
             self$model$agents, \(a) as.character(a$get_behavior())
@@ -174,7 +172,7 @@ fixated <- function(model) {
 #' trial <- run_trial(model, stop = 10)
 #' @export
 run_trial <- function(model,
-                      observe = "behavior",
+                      observer = new_behavior_observer(),
                       stop = socmod::fixated,
                       legacy_behavior = "Legacy",
                       adaptive_behavior = "Adaptive",
@@ -183,8 +181,8 @@ run_trial <- function(model,
   # Initialize, run, and return a new Trial object.
   return (
     Trial$new(model = model, metadata = metadata)$run( 
-        stop = stop, legacy_behavior = legacy_behavior,
-        adaptive_behavior = adaptive_behavior
+      observer = observer, stop = stop, 
+      legacy_behavior = legacy_behavior, adaptive_behavior = adaptive_behavior
       )
   )
 }
@@ -222,7 +220,8 @@ run_trial <- function(model,
 #' )
 #' @export
 run_trials <- function(model_generator, n_trials_per_param = 10,
-                       stop = 10, .progress = TRUE, observe = "behavior",
+                       stop = 10, .progress = TRUE, 
+                       observer = new_behavior_observer(),
                        syncfile = NULL, overwrite = FALSE, ...) {
   
   # Check if syncfile is given...
@@ -250,7 +249,7 @@ run_trials <- function(model_generator, n_trials_per_param = 10,
     adaptive_behavior <- model_parameters$adaptive_behavior
   }
 
-  # Create a list of trials, each trial initialized with a param list from the grid 
+  # list of trials returned, each initialized from the grid
   trials <- purrr::pmap(
     parameter_grid, function(...) {
       param_list <- list(...)
@@ -259,7 +258,7 @@ run_trials <- function(model_generator, n_trials_per_param = 10,
       run_trial( 
         model, stop, legacy_behavior, adaptive_behavior, 
         metadata = list(replication_id = param_list$replication_id),
-        observe = observe
+        observer = observer
       )
     }, 
     .progress = .progress

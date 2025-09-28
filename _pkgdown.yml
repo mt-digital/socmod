@@ -16,6 +16,31 @@ reference:
   contents: 
   - summarise_prevalence
   - summarise_outcomes
+- title: General Social Change Dynamics
+  desc: Tools for prevalence or opinion dynamics models
+  contents:
+    - well_mixed_selection
+- title: Prevalence Dynamics (social learning)
+  desc: Calculate prevalence dynamics of social learning models
+  contents:
+  - iterate_learning_model
+  - ModelDynamics
+  - starts_with("success_bias")
+  - starts_with("frequency_bias")
+  - starts_with("contagion_")
+  - ends_with("_learning_model")
+  - learning_model_step
+  - step_learning
+  - dummy_model_dynamics
+  - make_model_dynamics
+- title: Opinion Dynamics (social influence)
+  desc: Calculate opinion dynamics of social influence models
+  contents:
+    - OpinionAgent
+    - observe_opinion
+    - social_influence
+    - opinion_dynamics
+    - step_opinions
 - title: Visualizations
   desc: Tools to plot networks, outcomes, and time series
   contents:
@@ -37,19 +62,6 @@ reference:
   - AgentBasedModel
   - ModelParameters
   - DEFAULT_PARAMETERS
-- title: Model dynamics class, make_model_dynamics, and other tools
-  desc: |
-    Functions to pass to run for model iteration in a learning model,  and for either success-biased or frequency-biased adaptive learning.
-  contents:
-  - iterate_learning_model
-  - ModelDynamics
-  - starts_with("success_bias")
-  - starts_with("frequency_bias")
-  - starts_with("contagion_")
-  - ends_with("_learning_model")
-  - learning_model_step
-  - dummy_model_dynamics
-  - make_model_dynamics
 - title: Agents and their neighbors
   desc: |
     Agents in the model are represented by a number of attributes, with select class methods to track lists of their neighbors.

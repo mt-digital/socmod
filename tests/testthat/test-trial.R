@@ -1,5 +1,3 @@
-
-
 test_that("Trial records observations and outcomes correctly", {
 
   # Minimal model with adaptive initialization.
@@ -105,7 +103,7 @@ test_that("summarise_outcomes correctly summarizes grouped trial outcomes", {
       # ...make an agent-based model with these settings...
       make_abm() %>%
       # ...and simulate model dynamics for three time steps.
-      run_trial(stop = 3)
+      run_trial(observer = new_behavior_observer(), stop = 3)
     
     trial$outcomes$adaptation_success <- (ii %% 2 == 0) # Even trials "succeed".
     trial$outcomes$fixation_steps <- ii + 1

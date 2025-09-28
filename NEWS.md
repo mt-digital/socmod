@@ -1,3 +1,10 @@
+# socmod 0.2.6 (2025-09-28)
+
+- Added OpinionAgent and opinion dynamics with social influence
+- Revised observation dispatch to take any user-defined observer function.
+- Added `well_mixed_selection` partner selection for empty social networks.
+- Organized R/ code directory and source files.
+
 # socmod 0.2.5 (2025-09-27)
 
 - Added observation dispatch to `run_trial()` and `run_trials()`.  

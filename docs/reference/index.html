@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">socmod</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
           <code><a href="observe_behavior.html">observe_behavior()</a></code>
 
         </dt>
-        <dd>Observation functions for agent-based models</dd>
+        <dd>Function to gather behavior adoption data at a single model <code>step</code></dd>
       </dl></div><div class="section level2">
 
 
@@ -97,6 +97,171 @@
 
         </dt>
         <dd>Summarize outcomes across trials by input parameters</dd>
+      </dl></div><div class="section level2">
+      <h2 id="general-social-change-dynamics">General Social Change Dynamics<a class="anchor" aria-label="anchor" href="#general-social-change-dynamics"></a></h2>
+
+      <div class="section-desc"><p>Tools for prevalence or opinion dynamics models</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="well_mixed_selection.html">well_mixed_selection()</a></code>
+
+        </dt>
+        <dd>select randomly either with self-influence or nah</dd>
+      </dl></div><div class="section level2">
+      <h2 id="prevalence-dynamics-social-learning-">Prevalence Dynamics (social learning)<a class="anchor" aria-label="anchor" href="#prevalence-dynamics-social-learning-"></a></h2>
+
+      <div class="section-desc"><p>Calculate prevalence dynamics of social learning models</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="iterate_learning_model.html">iterate_learning_model()</a></code>
+
+        </dt>
+        <dd>A generic method for iterating a learning model, setting the current behavior and fitness to be whatever was identified as the next behavior and fitness.</dd>
+      </dl><dl><dt>
+
+          <code><a href="ModelDynamics.html">ModelDynamics</a></code>
+
+        </dt>
+        <dd>ModelDynamics</dd>
+      </dl><dl><dt>
+
+          <code><a href="success_bias_interact.html">success_bias_interact()</a></code>
+
+        </dt>
+        <dd>Success-biased interaction function</dd>
+      </dl><dl><dt>
+
+          <code><a href="success_bias_model_dynamics.html">success_bias_model_dynamics</a></code>
+
+        </dt>
+        <dd>Define success-biased learning strategy.</dd>
+      </dl><dl><dt>
+
+          <code><a href="success_bias_select_teacher.html">success_bias_select_teacher()</a></code>
+
+        </dt>
+        <dd>Success-biased teacher selection</dd>
+      </dl><dl><dt>
+
+          <code><a href="frequency_bias_interact.html">frequency_bias_interact()</a></code>
+
+        </dt>
+        <dd>Interaction function for frequency-biased adaptive learning.</dd>
+      </dl><dl><dt>
+
+          <code><a href="frequency_bias_model_dynamics.html">frequency_bias_model_dynamics</a></code>
+
+        </dt>
+        <dd>Define frequency-biased learning strategy.</dd>
+      </dl><dl><dt>
+
+          <code><a href="frequency_bias_select_teacher.html">frequency_bias_select_teacher()</a></code>
+
+        </dt>
+        <dd>Frequency biased teacher selection does nothing</dd>
+      </dl><dl><dt>
+
+          <code><a href="contagion_interaction.html">contagion_interaction()</a></code>
+
+        </dt>
+        <dd>Contagion-based interaction</dd>
+      </dl><dl><dt>
+
+          <code><a href="contagion_model_dynamics.html">contagion_model_dynamics</a></code>
+
+        </dt>
+        <dd>Define contagion learning "strategy".</dd>
+      </dl><dl><dt>
+
+          <code><a href="contagion_model_step.html">contagion_model_step()</a></code>
+
+        </dt>
+        <dd>Contagion model step</dd>
+      </dl><dl><dt>
+
+          <code><a href="contagion_partner_selection.html">contagion_partner_selection()</a></code>
+
+        </dt>
+        <dd>Contagion-based partner selection</dd>
+      </dl><dl><dt>
+
+          <code><a href="learning_model_step.html">learning_model_step()</a></code>
+
+        </dt>
+        <dd>More modern v0.1 alias for iterate_learning_model.</dd>
+      </dl><dl><dt>
+
+          <code><a href="step_learning.html">step_learning()</a></code>
+
+        </dt>
+        <dd>Yet another potential alias for iterate_learning_model to match step_opinions</dd>
+      </dl><dl><dt>
+
+          <code><a href="dummy_model_dynamics.html">dummy_model_dynamics()</a></code>
+
+        </dt>
+        <dd>Make a dummy learning strategy for mockups and testing.</dd>
+      </dl><dl><dt>
+
+          <code><a href="make_model_dynamics.html">make_model_dynamics()</a></code>
+
+        </dt>
+        <dd>Factory function for creating a ModelDynamics</dd>
+      </dl></div><div class="section level2">
+      <h2 id="opinion-dynamics-social-influence-">Opinion Dynamics (social influence)<a class="anchor" aria-label="anchor" href="#opinion-dynamics-social-influence-"></a></h2>
+
+      <div class="section-desc"><p>Calculate opinion dynamics of social influence models</p></div>
+
+
+    </div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="OpinionAgent.html">OpinionAgent</a></code>
+
+        </dt>
+        <dd>Opinion agent extends base socmod::Agent to add opinions and stubbornness</dd>
+      </dl><dl><dt>
+
+          <code><a href="observe_opinion.html">observe_opinion()</a></code>
+
+        </dt>
+        <dd>Function to gather opinion and stubbornness data at a single model <code>step</code></dd>
+      </dl><dl><dt>
+
+          <code><a href="social_influence.html">social_influence()</a></code>
+
+        </dt>
+        <dd>Bivalent social influence</dd>
+      </dl><dl><dt>
+
+          <code><a href="opinion_dynamics.html">opinion_dynamics</a></code>
+
+        </dt>
+        <dd>Basic model dynamics for opinions</dd>
+      </dl><dl><dt>
+
+          <code><a href="step_opinions.html">step_opinions()</a></code>
+
+        </dt>
+        <dd>Basic stepper for opinions</dd>
       </dl></div><div class="section level2">
       <h2 id="visualizations">Visualizations<a class="anchor" aria-label="anchor" href="#visualizations"></a></h2>
 
@@ -196,107 +361,6 @@
 
         </dt>
         <dd>Default parameters to create an agent-based model.</dd>
-      </dl></div><div class="section level2">
-      <h2 id="model-dynamics-class-make-model-dynamics-and-other-tools">Model dynamics class, make_model_dynamics, and other tools<a class="anchor" aria-label="anchor" href="#model-dynamics-class-make-model-dynamics-and-other-tools"></a></h2>
-
-      <div class="section-desc"><p>Functions to pass to run for model iteration in a learning model, and for either success-biased or frequency-biased adaptive learning.</p></div>
-
-
-    </div><div class="section level2">
-
-
-
-
-      <dl><dt>
-
-          <code><a href="iterate_learning_model.html">iterate_learning_model()</a></code>
-
-        </dt>
-        <dd>A generic method for iterating a learning model, setting the current behavior and fitness to be whatever was identified as the next behavior and fitness.</dd>
-      </dl><dl><dt>
-
-          <code><a href="ModelDynamics.html">ModelDynamics</a></code>
-
-        </dt>
-        <dd>ModelDynamics</dd>
-      </dl><dl><dt>
-
-          <code><a href="success_bias_interact.html">success_bias_interact()</a></code>
-
-        </dt>
-        <dd>Success-biased interaction function</dd>
-      </dl><dl><dt>
-
-          <code><a href="success_bias_model_dynamics.html">success_bias_model_dynamics</a></code>
-
-        </dt>
-        <dd>Define success-biased learning strategy.</dd>
-      </dl><dl><dt>
-
-          <code><a href="success_bias_select_teacher.html">success_bias_select_teacher()</a></code>
-
-        </dt>
-        <dd>Success-biased teacher selection</dd>
-      </dl><dl><dt>
-
-          <code><a href="frequency_bias_interact.html">frequency_bias_interact()</a></code>
-
-        </dt>
-        <dd>Interaction function for frequency-biased adaptive learning.</dd>
-      </dl><dl><dt>
-
-          <code><a href="frequency_bias_model_dynamics.html">frequency_bias_model_dynamics</a></code>
-
-        </dt>
-        <dd>Define frequency-biased learning strategy.</dd>
-      </dl><dl><dt>
-
-          <code><a href="frequency_bias_select_teacher.html">frequency_bias_select_teacher()</a></code>
-
-        </dt>
-        <dd>Frequency biased teacher selection does nothing</dd>
-      </dl><dl><dt>
-
-          <code><a href="contagion_interaction.html">contagion_interaction()</a></code>
-
-        </dt>
-        <dd>Contagion-based interaction</dd>
-      </dl><dl><dt>
-
-          <code><a href="contagion_model_dynamics.html">contagion_model_dynamics</a></code>
-
-        </dt>
-        <dd>Define contagion learning "strategy".</dd>
-      </dl><dl><dt>
-
-          <code><a href="contagion_model_step.html">contagion_model_step()</a></code>
-
-        </dt>
-        <dd>Contagion model step</dd>
-      </dl><dl><dt>
-
-          <code><a href="contagion_partner_selection.html">contagion_partner_selection()</a></code>
-
-        </dt>
-        <dd>Contagion-based partner selection</dd>
-      </dl><dl><dt>
-
-          <code><a href="learning_model_step.html">learning_model_step()</a></code>
-
-        </dt>
-        <dd>More modern v0.1 alias for iterate_learning_model.</dd>
-      </dl><dl><dt>
-
-          <code><a href="dummy_model_dynamics.html">dummy_model_dynamics()</a></code>
-
-        </dt>
-        <dd>Make a dummy learning strategy for mockups and testing.</dd>
-      </dl><dl><dt>
-
-          <code><a href="make_model_dynamics.html">make_model_dynamics()</a></code>
-
-        </dt>
-        <dd>Factory function for creating a ModelDynamics</dd>
       </dl></div><div class="section level2">
       <h2 id="agents-and-their-neighbors">Agents and their neighbors<a class="anchor" aria-label="anchor" href="#agents-and-their-neighbors"></a></h2>
 
