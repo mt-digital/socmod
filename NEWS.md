@@ -1,4 +1,9 @@
-# socmod 0.2.4 (2025-10-24)
+# socmod 0.2.5 (2025-09-27)
+
+- Added observation dispatch to `run_trial()` and `run_trials()`.  
+- Default remains `"behavior"`, ensuring backward compatibility.  
+
+# socmod 0.2.4 (2025-09-24)
 
 - If only `agents` are provided to `make_abm` an empty graph is created by
   default.

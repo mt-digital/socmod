@@ -32,7 +32,7 @@ measures such as adaptation success and steps to fixation.
 \subsection{Method \code{new()}}{
 Initialize a Trial with a model and functions
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Trial$new(model, metadata = list())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Trial$new(model, metadata = list(), label = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -54,7 +54,8 @@ Run the model and collect results
 \if{html}{\out{<div class="r">}}\preformatted{Trial$run(
   stop = 50,
   legacy_behavior = "Legacy",
-  adaptive_behavior = "Adaptive"
+  adaptive_behavior = "Adaptive",
+  observe = "behavior"
 )}\if{html}{\out{</div>}}
 }
 

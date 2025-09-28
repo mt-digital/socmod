@@ -1,6 +1,6 @@
 Package: socmod
 Title: Social behavior models in R
-Version: 0.2.4
+Version: 0.2.5
 Authors@R: 
     person("Matt", "Turner", , "maturner01@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-7421-4552"))

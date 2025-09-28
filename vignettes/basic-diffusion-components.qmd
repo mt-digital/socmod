@@ -1,8 +1,8 @@
 ---
-title: Components for basic diffusion modeling with socmod
-author: Matt Turner
+title: "Components for basic diffusion modeling with socmod"
 vignette: >
   %\VignetteIndexEntry{Components for basic diffusion modeling with socmod}
+  %\VignetteAuthor{Matt Turner}
   %\VignetteEngine{quarto::quarto}
   %\VignetteEncoding{UTF-8}
 ---

@@ -9,6 +9,7 @@ reference:
   - starts_with("run_trial")
   - Trial
   - fixated
+  - observe_behavior
 - title: 
   desc: |
     Summarise a collection of trial outcomes or prevalence dynamics over model parameters

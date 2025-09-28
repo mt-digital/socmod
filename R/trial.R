@@ -13,11 +13,12 @@ Trial <- R6::R6Class(
     observations = NULL,
     outcomes = NULL,
     metadata = list(),
+    label = NULL,
     
     #' @description Initialize a Trial with a model and functions
     #' @param model An AgentBasedModel instance
     #' @param metadata Label-value metadata store for trial information
-    initialize = function(model, metadata = list()) {
+    initialize = function(model, metadata = list(), label = NULL) {
 
       # Sync internal variables with user-provided.
       self$model <- model
@@ -35,38 +36,25 @@ Trial <- R6::R6Class(
     #' @param legacy_behavior The maladaptive behavior treated as "adaptation failure"
     #' @param adaptive_behavior The behavior treated as "adaptation success"
     run = function(
-        stop = 50, legacy_behavior = "Legacy", adaptive_behavior = "Adaptive") {
+        stop = 50, legacy_behavior = "Legacy", 
+        adaptive_behavior = "Adaptive", observe = "behavior") {
       
       step <- 0
 
       self$model$set_parameter("legacy_behavior", legacy_behavior)
       self$model$set_parameter("adaptive_behavior", adaptive_behavior)
       step <- 0
+
       obs_list <- list()
-      n_agents <- length(self$model$agents)
-      
-      obs_list[[1]] <- tibble::tibble(
-        Step = 0,
-        agent = vapply(self$model$agents, 
-                       \(a) a$name, character(1)),
-        Behavior = vapply(self$model$agents, 
-                          \(a) as.character(a$behavior_current), character(1)),
-        Fitness = vapply(self$model$agents, 
-                         \(a) a$fitness_current, numeric(1)),
-        label = self$label
-      )
       
       # Get learning and iteration functions from the model's learning strategy.
       lstrat <- self$model$get_parameter("model_dynamics")
       partner_selection <- lstrat$get_partner_selection()
       interaction <- lstrat$get_interaction()
       model_step <- lstrat$get_model_step()
-
-      # Main iteration loop.
-      while (TRUE) {
-        
-        step <- step + 1
-        
+      
+      repeat {
+        # --- run one model step ---
         # Partner selection and interaction with selected partner.
         for (agent in self$model$agents) {
           partner <- NULL
@@ -80,41 +68,40 @@ Trial <- R6::R6Class(
         if (!is.null(model_step)) {
           model_step(self$model)
         }
-        
-        # Update observations. 
-        obs_list[[step + 1]] <- tibble::tibble(
-          Step = step,
-          agent = vapply(self$model$agents, \(a) a$name, character(1)),
-          Behavior = vapply(self$model$agents, \(a) as.character(a$behavior_current), character(1)),
-          Fitness = vapply(self$model$agents, \(a) a$fitness_current, numeric(1)),
+
+        # --- collect observations via dispatcher ---
+        obs_list[[step + 1]] <- observe_dispatch(
+          self$model,
+          type = observe,
+          step = step,
           label = self$label
         )
-        
-        # Stop when stop function returns TRUE or max steps reached.
-        if (is.function(stop)) {
-          if (stop(self$model)) {
-            break
-          }
-        } else if (step >= stop) {
-          break
-        }
-      } # End main iteration loop
-      
-      behaviors <- unlist(
-        purrr::map(
-          self$model$agents, \(a) as.character(a$get_behavior())
-        ), 
-        use.names = FALSE
-      )
-      self$observations <- dplyr::bind_rows(obs_list)
-      
-      self$outcomes$adaptation_success <- 
-        length(unique(behaviors)) == 1 && 
-          unique(behaviors) == adaptive_behavior
-      
-      self$outcomes$fixation_steps <- step
 
-      invisible (self)
+        # --- stopping condition ---
+        step <- step + 1
+        if (is.numeric(stop) && step >= stop) break
+        if (is.function(stop) && stop(self$model)) break
+      }
+
+      # bind all observations
+      self$observations <- dplyr::bind_rows(obs_list)
+
+      # if we observe behavior, identify whether this is adaptive success or not
+      if (observe == "behavior") {
+        behaviors <- unlist(
+          purrr::map(
+            self$model$agents, \(a) as.character(a$get_behavior())
+          ), 
+          use.names = FALSE
+        )
+        self$outcomes$adaptation_success <- 
+          length(unique(behaviors)) == 1 && 
+          unique(behaviors) == adaptive_behavior
+        
+        self$outcomes$fixation_steps <- step
+      }
+      
+      return(invisible(self))
     },
     
     #' Add or update metadata in a Trial object
@@ -187,14 +174,15 @@ fixated <- function(model) {
 #' trial <- run_trial(model, stop = 10)
 #' @export
 run_trial <- function(model,
+                      observe = "behavior",
                       stop = socmod::fixated,
                       legacy_behavior = "Legacy",
                       adaptive_behavior = "Adaptive",
                       metadata = list()) {
-  
+
   # Initialize, run, and return a new Trial object.
   return (
-    Trial$new(model = model, metadata = metadata)$run(
+    Trial$new(model = model, metadata = metadata)$run( 
         stop = stop, legacy_behavior = legacy_behavior,
         adaptive_behavior = adaptive_behavior
       )
@@ -234,7 +222,7 @@ run_trial <- function(model,
 #' )
 #' @export
 run_trials <- function(model_generator, n_trials_per_param = 10,
-                       stop = 10, .progress = TRUE, 
+                       stop = 10, .progress = TRUE, observe = "behavior",
                        syncfile = NULL, overwrite = FALSE, ...) {
   
   # Check if syncfile is given...
@@ -270,7 +258,8 @@ run_trials <- function(model_generator, n_trials_per_param = 10,
       
       run_trial( 
         model, stop, legacy_behavior, adaptive_behavior, 
-        metadata = list(replication_id = param_list$replication_id)
+        metadata = list(replication_id = param_list$replication_id),
+        observe = observe
       )
     }, 
     .progress = .progress
