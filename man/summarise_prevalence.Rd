@@ -41,7 +41,7 @@ Prevalence is normalized by the number of agents in each trial.
 \examples{
 abm_gen <- function(params) {
   params$graph <- make_small_world(params$n_agents, 6, 0.5)
-  return (do.call(make_abm, params) \%>\%
+  return (do.call(make_abm, params) |>
             initialize_agents(
               initial_prevalence = params$initial_prevalence,
               adaptive_fitness = params$adaptive_fitness
@@ -59,10 +59,7 @@ trials <-
     adaptive_fitness = adaptive_fitness_vals
 )
 summary <- summarise_prevalence(
-  trials, input_parameters = "adaptive_fitness", across_trials = F
-) \%>\% 
-  dplyr::mutate(
-    `Adaptive fitness` = factor(adaptive_fitness, adaptive_fitness_vals)
-  )
+  trials, input_parameters = "adaptive_fitness", across_trials = FALSE
+)
 
 }

@@ -24,9 +24,11 @@
 #' # Add a title and modify legend position
 #' plot_network_adoption(
 #'   abm,
-#'   plot_mod = . %>%
-#'     ggplot2::ggtitle("Adoption at t = 0") %>%
+#'   plot_mod = \(x) {
+#'     x |>
+#'     ggplot2::ggtitle("Adoption at t = 0") |>
 #'     ggplot2::theme(legend.position = "bottom")
+#'   }
 #' )
 #' @export
 plot_network_adoption <- function(
@@ -193,7 +195,7 @@ plot_prevalence <- function(trials_or_tibble,
 #' @examples
 #' abm_gen <- function(params) {
 #'   params$graph <- make_small_world(params$n_agents, 6, 0.5)
-#'   return (do.call(make_abm, params) %>%
+#'   return (do.call(make_abm, params) |>
 #'             initialize_agents(
 #'               initial_prevalence = params$initial_prevalence,
 #'               adaptive_fitness = params$adaptive_fitness
@@ -211,11 +213,8 @@ plot_prevalence <- function(trials_or_tibble,
 #'     adaptive_fitness = adaptive_fitness_vals
 #' )
 #' summary <- summarise_prevalence(
-#'   trials, input_parameters = "adaptive_fitness", across_trials = F
-#' ) %>% 
-#'   dplyr::mutate(
-#'     `Adaptive fitness` = factor(adaptive_fitness, adaptive_fitness_vals)
-#'   )
+#'   trials, input_parameters = "adaptive_fitness", across_trials = FALSE
+#' )
 #'
 #' @export
 summarise_prevalence <- function(trials_or_trial,
@@ -318,7 +317,7 @@ summarise_prevalence <- function(trials_or_trial,
 #' @examples
 #' abm_gen <- function(params) {
 #'   params$graph <- make_small_world(params$n_agents, 6, 0.5)
-#'   return (do.call(make_abm, params) %>%
+#'   return (do.call(make_abm, params) |>
 #'             initialize_agents(
 #'               initial_prevalence = params$initial_prevalence,
 #'               adaptive_fitness = params$adaptive_fitness
@@ -343,7 +342,7 @@ summarise_prevalence <- function(trials_or_trial,
 #' 
 #' max_fix_time <- max(outcomes$Value[outcomes$Measure == "mean_fixation_steps"])
 #' # Normalize to calculate mean fixation time as a fraction of maximum
-#' outcomes_norm <- outcomes %>%
+#' outcomes_norm <- outcomes |>
 #'   dplyr::mutate(Value = dplyr::case_when(
 #'     Measure == "mean_fixation_steps" ~ Value / max_fix_time,
 #'     TRUE ~ Value

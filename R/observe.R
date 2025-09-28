@@ -40,6 +40,9 @@ observe_opinion <- function(model, step, label = NULL, ...) {
 }
 
 
+#' Wrap observer function with a label
+#'
+#' @export
 Observer <- R6::R6Class(
   "Observer",
   public = list(
@@ -59,11 +62,17 @@ Observer <- R6::R6Class(
 )
 
 
+#' Call this to get a new Observer for behaviors.
+#'
+#' @export
 new_behavior_observer <- function(observer_label = "behavior") {
   return(Observer$new(observe_behavior, observer_label))
 }
 
 
+#' Call this to get a new Observer for opinions.
+#'
+#' @export
 new_opinion_observer <- function(observer_label = "opinion") {
   return(Observer$new(observe_opinion, observer_label))
 }

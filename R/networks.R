@@ -229,29 +229,6 @@ make_preferential_attachment <- function(N) {
 }
 
 
-#' Plot homophily network where groups color nodes.
-#'
-#' @param net Homophily network to plot.
-#' @param node_size Node size in plot.
-#' @param line_width Edge line width.
-#' @param theme_base_size Base font size to pass to ggplot theme.
-#'
-#' @returns ggplot 
-#' @export
-#'
-# @examples
-# hnet_5grp <- make_homophily_network(rep(5, 5), mean_degree = 2, homophily = -0.5)
-# plot_homophilynet(hnet_5grp)
-#' @noRd
-plot_homophilynet <- function(net, node_size = 3, line_width = 0.1, 
-                              theme_base_size = 10) {
-  ggplot(ggnetwork(net, layout = "circular"), aes(x=x, y=y, xend=xend, yend=yend)) + 
-    geom_edges(color = "grey", linewidth = line_width) + 
-    geom_nodes(aes(color = group), size = node_size) + 
-    theme_blank(base_size = theme_base_size)
-}
-
-
 #' Create an undirected asymmetric homophily network. 
 #' 
 #' @description

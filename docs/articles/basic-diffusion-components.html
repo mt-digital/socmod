@@ -448,7 +448,7 @@
 <code class="sourceCode R"><span><span class="va">footballer</span> <span class="op">&lt;-</span> <span class="va">Footballer</span><span class="op">$</span><span class="fu">new</span><span class="op">(</span>accuracy <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">footballer</span><span class="op">$</span><span class="fu">scored_goal</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1</code></pre>
+<pre><code>[1] 0</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># sum(purrr::map_vec(1:10, \(.) p$scored_goal()))</span></span></code></pre></div>
@@ -518,19 +518,19 @@
 <span><span class="fu">play_match</span><span class="op">(</span><span class="va">whales</span>, <span class="va">squirrels</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Squirrels wins!!!
-Whales :  5     Squirrels :  6 </code></pre>
+Whales :  1     Squirrels :  2 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">play_match</span><span class="op">(</span><span class="va">squirrels</span>, <span class="va">whales</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Whales wins!!!
-Squirrels :  5     Whales :  8 </code></pre>
+Squirrels :  2     Whales :  4 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb65"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">play_match</span><span class="op">(</span><span class="va">squirrels</span>, <span class="va">whales</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Squirrels wins!!!
-Squirrels :  4     Whales :  2 </code></pre>
+<pre><code>Whales wins!!!
+Squirrels :  2     Whales :  3 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb67"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Print how many games each time won.</span></span>
@@ -539,7 +539,7 @@ Squirrels :  4     Whales :  2 </code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 After three games...
-The Whales have won 1 games and the Squirrels have won 2</code></pre>
+The Whales have won 2 games and the Squirrels have won 1</code></pre>
 </div>
 </div>
 </section></section><section class="level2"><h2 id="agent-based-models-of-social-behavior">Agent-based models of social behavior<a class="anchor" aria-label="anchor" href="#agent-based-models-of-social-behavior"></a>

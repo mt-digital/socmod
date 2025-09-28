@@ -1,5 +1,6 @@
 Package: socmod
 Title: Social behavior models in R
+VignetteBuilder: quarto
 Version: 0.2.6
 Authors@R: 
     person("Matt", "Turner", , "maturner01@gmail.com", role = c("aut", "cre"),
@@ -12,23 +13,21 @@ RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
+    netrankr,
     testthat (>= 3.0.0),
     quarto
 Config/testthat/edition: 3
 Imports: 
     assertthat,
     dplyr,
-    evaluate,
     ggplot2,
     ggnetwork,
     igraph,
     magrittr,
-    netrankr,
-    pkgdown,
     purrr,
     R6,
     rlang,
     tibble,
-    uuid
+    tidygraph,
+    tidyr
 URL: https://SocSci-for-Sustainability.github.io/socmod/
-VignetteBuilder: quarto, knitr

@@ -46,8 +46,10 @@ plot_network_adoption(abm, node_size = list(Degree = igraph::degree))
 # Add a title and modify legend position
 plot_network_adoption(
   abm,
-  plot_mod = . \%>\%
-    ggplot2::ggtitle("Adoption at t = 0") \%>\%
+  plot_mod = \(x) {
+    x |>
+    ggplot2::ggtitle("Adoption at t = 0") |>
     ggplot2::theme(legend.position = "bottom")
+  }
 )
 }

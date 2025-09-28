@@ -19,24 +19,26 @@ reference:
 - title: General Social Change Dynamics
   desc: Tools for prevalence or opinion dynamics models
   contents:
+    - ModelDynamics
+    - dummy_model_dynamics
+    - make_model_dynamics
     - well_mixed_selection
 - title: Prevalence Dynamics (social learning)
   desc: Calculate prevalence dynamics of social learning models
   contents:
-  - iterate_learning_model
-  - ModelDynamics
-  - starts_with("success_bias")
-  - starts_with("frequency_bias")
-  - starts_with("contagion_")
-  - ends_with("_learning_model")
-  - learning_model_step
-  - step_learning
-  - dummy_model_dynamics
-  - make_model_dynamics
+    - new_behavior_observer
+    - iterate_learning_model
+    - starts_with("success_bias")
+    - starts_with("frequency_bias")
+    - starts_with("contagion_")
+    - ends_with("_learning_model")
+    - learning_model_step
+    - step_learning
 - title: Opinion Dynamics (social influence)
   desc: Calculate opinion dynamics of social influence models
   contents:
     - OpinionAgent
+    - new_opinion_observer
     - observe_opinion
     - social_influence
     - opinion_dynamics

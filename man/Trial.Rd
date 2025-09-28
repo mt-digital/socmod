@@ -55,7 +55,7 @@ Run the model and collect results
   stop = 50,
   legacy_behavior = "Legacy",
   adaptive_behavior = "Adaptive",
-  observe = "behavior"
+  observer = new_behavior_observer()
 )}\if{html}{\out{</div>}}
 }
 

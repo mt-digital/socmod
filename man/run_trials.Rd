@@ -9,7 +9,7 @@ run_trials(
   n_trials_per_param = 10,
   stop = 10,
   .progress = TRUE,
-  observe = "behavior",
+  observer = new_behavior_observer(),
   syncfile = NULL,
   overwrite = FALSE,
   ...
@@ -36,7 +36,7 @@ used in model construction or trial dynamics are included in metadata for transp
 \examples{
 abm_gen <- function(params) {
   params$graph <- make_small_world(params$n_agents, 6, 0.5)
-  return (do.call(make_abm, params) \%>\%
+  return (do.call(make_abm, params) |>
             initialize_agents(
               initial_prevalence = params$initial_prevalence,
               adaptive_fitness = params$adaptive_fitness

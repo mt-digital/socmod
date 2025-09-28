@@ -202,7 +202,7 @@ run_trial <- function(model,
 #' @examples
 #' abm_gen <- function(params) {
 #'   params$graph <- make_small_world(params$n_agents, 6, 0.5)
-#'   return (do.call(make_abm, params) %>%
+#'   return (do.call(make_abm, params) |>
 #'             initialize_agents(
 #'               initial_prevalence = params$initial_prevalence,
 #'               adaptive_fitness = params$adaptive_fitness

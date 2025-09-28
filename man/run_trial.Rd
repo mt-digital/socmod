@@ -6,7 +6,7 @@
 \usage{
 run_trial(
   model,
-  observe = "behavior",
+  observer = new_behavior_observer(),
   stop = socmod::fixated,
   legacy_behavior = "Legacy",
   adaptive_behavior = "Adaptive",
