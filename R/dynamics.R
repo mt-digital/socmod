@@ -125,7 +125,7 @@ social_influence <- function(focal_agent, partner, model) {
   delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
   
   alpha <- model$get_parameter("alpha")
-  stubbornness <- s_latent(focal_agent$opinions, alpha)
+  stubbornness <- calc_stubbornness(focal_agent$opinions, alpha)
   
   focal_agent$stubbornness <- stubbornness
   focal_agent$next_opinions <- focal_agent$opinions + delta_ok * stubbornness
@@ -134,29 +134,54 @@ social_influence <- function(focal_agent, partner, model) {
 }
 
 
-#' select randomly either with self-influence or nah
+#' Calculate stubbornness (see book for more)
+#'
+#' Book link: https://socsci-for-sustainability.github.io/
+#' @export
+calc_stubbornness <- function(o, alpha) {
+  val <- 1.0 / (1.0 + abs(o)^alpha)
+  val[val < 0.0] <- 0.0  # numerical guard
+  val
+}
+
+
+#' Factory for well-mixed selection, mixin n_agents and self-learning or not
 #'
 #' @export
-well_mixed_selection <- function(focal, model) { 
-  model$get_parameter("n_agents")
-  if (model$self_influence) {
-    ids_to_sample <- model$get_parameter("n_agents")
-  } else {
-    
-    agents_to_sample <- model$agents
+make_well_mixed_selection <- 
+  function(self_selection = TRUE) { 
+
+  # create mixin that will exclude self-selection if desired
+  self_selection_expr <- quote({})
+  if (!self_selection) {
+    self_selection_expr <- quote({
+      while (focal_agent$get_id() == partner$get_id()) {
+        partner <- sample(model$agents, 1)[[1]]
+      }
+    })
   }
   
-  partner <- sample(agents_to_sample, 1)
-  
-  return(partner)
+  # construct function 
+  well_mixed_selection_fun <- function(focal_agent, model) {
+
+    partner <- sample(model$agents, 1)[[1]]
+
+    eval(bquote(.(self_selection_expr)))
+    
+    return(partner)
+  }
+
+  return(well_mixed_selection_fun)
 }
+
+
+#---------- OPINION DYNAMICS WITH SOCIAL INFLUENCE -----------
 
 #' Basic stepper for opinions
 #'
 #' @export
 step_opinions <- function(model) {
   purrr::walk(model$agents, ~ .x$step_opinions())
-  
   return(NULL)
 }
 
@@ -165,11 +190,15 @@ step_opinions <- function(model) {
 #' 
 #' @export
 opinion_dynamics <- make_model_dynamics(
-  partner_selection = well_mixed_selection,
+  # opinion dynamics has stubbornness that maintains one's own opinion
+  partner_selection = make_well_mixed_selection(self_selection = FALSE),
   interaction = social_influence,
   model_step = step_opinions,
   label = "Well-mixed opinion dynamics"
 )
+
+
+#---------- PREVALENCE DYNAMICS WITH SOCIAL LEARNING -----------
 
 
 #' A generic method for iterating a learning model, setting the current 
@@ -438,7 +467,7 @@ social_influence <- function(focal_agent, partner, model) {
   delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
   
   alpha <- model$get_parameter("alpha")
-  stubbornness <- s_latent(focal_agent$opinions, alpha)
+  stubbornness <- calc_stubbornness(focal_agent$opinions, alpha)
   
   focal_agent$stubbornness <- stubbornness
   focal_agent$next_opinions <- focal_agent$opinions + delta_ok * stubbornness

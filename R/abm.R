@@ -292,3 +292,43 @@ make_abm <- function(parameters = NULL, agents = NULL, ...) {
   )
 }
 
+
+#' Make an opinion dynamics ABM with OpinionAgents and social influence
+#'
+#' @export
+make_opinion_abm <- function (parameters = NULL, agents = NULL, init_mean = 0.0,
+                              init_sd = 1.0, ...) {
+  if (is.null(parameters)) {
+    dots <- list(...)
+    parameters <- do.call(make_model_parameters, dots)
+  }
+  
+  if (is.null(agents)) {
+    n_agents <- parameters$get_n_agents()
+    if (is.null(n_agents)) {
+      stop("n_agents must be specified in parameters or agents must be provided.")
+    }
+    
+    agents <- purrr::map2(
+      seq_len(n_agents),
+      paste0("a", seq_len(n_agents)),
+      \(i, nm) {
+        OpinionAgent$new(id = i, name = nm, 
+                         init_op_mean = init_mean, 
+                         init_op_sd = init_sd)
+      }
+    )
+  } else {
+    # Ensure all agents are OpinionAgents
+    if (!all(vapply(agents, \(a) inherits(a, "OpinionAgent"), logical(1)))) {
+      stop("All agents must be OpinionAgent instances.")
+    }
+  }
+  
+  return (
+    AgentBasedModel$new(
+      parameters = parameters,
+      agents = agents
+    )
+  )
+}

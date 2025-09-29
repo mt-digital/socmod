@@ -6,7 +6,7 @@ library(purrr)
 
 stubbornness <- function(o, alpha) {
   val <- 1.0 / (1.0 + abs(o)^alpha)
-  val[val < 0.0] <- 0.0  # numerical guard
+  val[val < 0.0] <- 0.0  # numerical guard; freezes opinions
   val
 }
 
@@ -23,7 +23,7 @@ OpinionAgent <- R6::R6Class(
     next_opinions = NULL,
     opinions = NULL,
     stubbornness = NULL,
-    alpha = 1.0,  # 
+    alpha = 1.0,  #  stubborn extremism increases with alpha
     
     # make opinion stepping internal, unlike current social learning dynamics
     step_opinions = function() {

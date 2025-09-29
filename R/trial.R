@@ -155,6 +155,32 @@ fixated <- function(model) {
 }
 
 
+opinion_fixation <- function(eps = 1e-6, k = 10) {
+  prev_opinions <- NULL
+  recent_small <- integer(0)  # stores booleans
+  function(model) {
+    # collect opinions from all agents as a matrix
+    current <- do.call(rbind, lapply(model$agents, \(a) a$opinions))
+    
+    if (is.null(prev_opinions)) {
+      prev_opinions <<- current
+      return(FALSE)
+    }
+    
+    delta <- max(abs(current - prev_opinions))
+    prev_opinions <<- current
+    
+    recent_small <<- c(recent_small, delta < eps)
+    if (length(recent_small) > k) {
+      recent_small <<- tail(recent_small, k)
+    }
+    
+    all(recent_small)  # stop if k consecutive steps are small
+  }
+}
+
+
+
 #' Trial runner helper function
 #'
 #' @param model An AgentBasedModel
