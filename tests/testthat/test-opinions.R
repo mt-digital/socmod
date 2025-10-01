@@ -1,10 +1,10 @@
 # tests/testthat/test-opinions.R
 
 
-test_that("stubbornness function works correctly", {
-  expect_equal(calc_stubbornness(0, 1), 1)          # at 0 → 1
-  expect_equal(calc_stubbornness(1, 1), 0.5)        # at ±1 → 0
-  expect_lt(calc_stubbornness(10, 1), 0.1)          # large opinions ≈ 0
+test_that("receptivity function works correctly", {
+  expect_equal(calc_receptivity(0, 1), 1)          # at 0 → 1
+  expect_equal(calc_receptivity(1, 1), 0.5)        # at ±1 → 0
+  expect_lt(calc_receptivity(10, 1), 0.1)          # large opinions ≈ 0
 })
 
 
@@ -37,7 +37,7 @@ test_that("opinion updates work correctly", {
   social_influence(a, b, m)
 
   expect_length(a$next_opinions, 3)        # dimension preserved
-  expect_length(a$stubbornness, 3)         # stubbornness matches opinions
+  expect_length(a$receptivity, 3)         # receptivity matches opinions
   expect_false(all(a$next_opinions == a$opinions))  # opinions updated
 
   # --- manual calculation check for the 3D case ---
@@ -47,8 +47,8 @@ test_that("opinion updates work correctly", {
   dij <- mean(abs(opinions_a - opinions_b))    # ≈ 0.4333
   wij <- 1 - dij                               # ≈ 0.5667
   delta_ok <- 0.5 * wij * (opinions_b - opinions_a)
-  stubb <- calc_stubbornness(opinions_a, alpha = 1)
-  expected <- opinions_a + delta_ok * stubb
+  recept <- calc_receptivity(opinions_a, alpha = 1)
+  expected <- opinions_a + delta_ok * recept
   # ≈ (-0.3583, -0.0567, 0.8057)
 
   expect_equal(as.numeric(a$next_opinions), expected, tolerance = 1e-6)

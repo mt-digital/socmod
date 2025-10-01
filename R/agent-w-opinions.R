@@ -1,17 +1,17 @@
 library(purrr)
 
 # -------------------------------
-# Stubbornness function
+# receptivity function
 # -------------------------------
 
-stubbornness <- function(o, alpha) {
+receptivity <- function(o, alpha) {
   val <- 1.0 / (1.0 + abs(o)^alpha)
   val[val < 0.0] <- 0.0  # numerical guard; freezes opinions
   val
 }
 
 
-#' Opinion agent extends base socmod::Agent to add opinions and stubbornness
+#' Opinion agent extends base socmod::Agent to add opinions and receptivity
 #'
 #' @export
 OpinionAgent <- R6::R6Class(
@@ -22,7 +22,7 @@ OpinionAgent <- R6::R6Class(
     # these are new fields in OpinionAgent that Agent doesn't have
     next_opinions = NULL,
     opinions = NULL,
-    stubbornness = NULL,
+    receptivity = NULL,
     alpha = 1.0,  #  stubborn extremism increases with alpha
     
     # make opinion stepping internal, unlike current social learning dynamics
@@ -70,8 +70,8 @@ OpinionAgent <- R6::R6Class(
       
       self$alpha <- alpha
       
-      # init stubbornness vector, one entry for each opinion in opinion vector
-      self$stubbornness <- stubbornness(self$opinions, self$alpha)
+      # init receptivity vector, one entry for each opinion in opinion vector
+      self$receptivity <- receptivity(self$opinions, self$alpha)
       
       return(invisible(self))
     }

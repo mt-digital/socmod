@@ -6,7 +6,7 @@
 #' @param ... Additional arguments for future observation types
 #'
 #' @export
-observe_behavior <- function(model, step, label = NULL, ...) {
+observe_behavior <- function(model, step, label = NULL) {
   observation_row <- tibble::tibble(
     Step = step,
     agent = vapply(model$agents, \(a) a$name, character(1)),
@@ -30,9 +30,9 @@ observe_behavior <- function(model, step, label = NULL, ...) {
 observe_opinion <- function(model, step, label = NULL, ...) {
   observation_row <- tibble::tibble(
     Step = step,
-    agent = vapply(model$agents, \(a) a$name, character(1)),
-    Opinions = vapply(model$agents, \(a) as.numeric(a$behavior_current)),
-    Stubbornness = vapply(model$agents, \(a) as.numeric(a$stubbornness)),
+    agent = as.character(vapply(model$agents, \(a) a$name, character(1))),
+    Opinions = as.double(map_vec(model$agents, \(a) as.numeric(a$opinions))),
+    Stubbornness = as.double(map_vec(model$agents, \(a) 1 - as.numeric(a$receptivity))),
     label = label
   )
   

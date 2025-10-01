@@ -144,3 +144,8 @@ test_that("summarise_outcomes correctly summarizes grouped trial outcomes", {
   
   expect_true(all(result$Value == 1.0))  # Successful even trials
 })
+
+
+test_that("Opinion dynamics trials work as expected", {
+  expect_true(F)
+})

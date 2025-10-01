@@ -125,10 +125,10 @@ social_influence <- function(focal_agent, partner, model) {
   delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
   
   alpha <- model$get_parameter("alpha")
-  stubbornness <- calc_stubbornness(focal_agent$opinions, alpha)
+  recp <- calc_receptivity(focal_agent$opinions, alpha)
   
-  focal_agent$stubbornness <- stubbornness
-  focal_agent$next_opinions <- focal_agent$opinions + delta_ok * stubbornness
+  focal_agent$receptivity <- recp
+  focal_agent$next_opinions <- focal_agent$opinions + delta_ok * recp
   
   return(invisible(focal_agent))
 }
@@ -138,7 +138,7 @@ social_influence <- function(focal_agent, partner, model) {
 #'
 #' Book link: https://socsci-for-sustainability.github.io/
 #' @export
-calc_stubbornness <- function(o, alpha) {
+calc_receptivity <- function(o, alpha) {
   val <- 1.0 / (1.0 + abs(o)^alpha)
   val[val < 0.0] <- 0.0  # numerical guard
   val
@@ -467,10 +467,10 @@ social_influence <- function(focal_agent, partner, model) {
   delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
   
   alpha <- model$get_parameter("alpha")
-  stubbornness <- calc_stubbornness(focal_agent$opinions, alpha)
+  recp <- calc_receptivity(focal_agent$opinions, alpha)
   
-  focal_agent$stubbornness <- stubbornness
-  focal_agent$next_opinions <- focal_agent$opinions + delta_ok * stubbornness
+  focal_agent$receptivity <- recp
+  focal_agent$next_opinions <- focal_agent$opinions + delta_ok * recp
   
   return(invisible(focal_agent))
 }

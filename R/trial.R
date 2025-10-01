@@ -155,7 +155,7 @@ fixated <- function(model) {
 }
 
 
-opinion_fixation <- function(eps = 1e-6, k = 10) {
+opinion <- function(eps = 1e-6, k = 10) {
   prev_opinions <- NULL
   recent_small <- integer(0)  # stores booleans
   function(model) {
