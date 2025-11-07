@@ -122,6 +122,11 @@ social_influence <- function(focal_agent, partner, model) {
   dij <- mean(abs(focal_agent$opinions - partner$opinions))
   wij <- 1.0 - dij
   
+  # print("IN SOCIAL INFLUENCE")
+  # print(partner$opinions)
+  # print(partner$next_opinions)
+  # print(focal_agent$opinions)
+  # print(focal_agent$next_opinions)
   delta_ok <- 0.5 * wij * (partner$opinions - focal_agent$opinions)
   
   alpha <- model$get_parameter("alpha")
@@ -129,7 +134,7 @@ social_influence <- function(focal_agent, partner, model) {
   
   focal_agent$receptivity <- recp
   focal_agent$next_opinions <- focal_agent$opinions + delta_ok * recp
-  
+  print(focal_agent$next_opinions)
   return(invisible(focal_agent))
 }
 
@@ -503,12 +508,12 @@ step_opinions <- function(model) {
 }
 
 
-#' Basic model dynamics for opinions
-#' 
-#' @export
-opinion_dynamics <- make_model_dynamics(
-  partner_selection = well_mixed_selection,
-  interaction = social_influence,
-  model_step = step_opinions,
-  label = "Well-mixed opinion dynamics"
-)
+#' #' Basic model dynamics for opinions
+#' #' 
+#' #' @export
+#' opinion_dynamics <- make_model_dynamics(
+#'   partner_selection = well_mixed_selection,
+#'   interaction = social_influence,
+#'   model_step = step_opinions,
+#'   label = "Well-mixed opinion dynamics"
+#' )

@@ -9,9 +9,14 @@
 observe_behavior <- function(model, step, label = NULL) {
   observation_row <- tibble::tibble(
     Step = step,
-    agent = vapply(model$agents, \(a) a$name, character(1)),
-    Behavior = vapply(model$agents, \(a) as.character(a$behavior_current), character(1)),
-    Fitness  = vapply(model$agents, \(a) a$fitness_current, numeric(1)),
+    agent = vapply(model$agents, 
+                   \(a) a$name, character(1)),
+    Behavior = vapply(model$agents, 
+                      \(a) as.character(a$behavior_current), 
+                      character(1)),
+    Fitness  = vapply(model$agents, 
+                      \(a) a$fitness_current, 
+                      numeric(1)),
     label = label
   )
   
@@ -28,11 +33,19 @@ observe_behavior <- function(model, step, label = NULL) {
 #'
 #' @export
 observe_opinion <- function(model, step, label = NULL, ...) {
+  
+  print(map(model$agents, ~.x$opinions))
+  
   observation_row <- tibble::tibble(
     Step = step,
-    agent = as.character(vapply(model$agents, \(a) a$name, character(1))),
-    Opinions = as.double(map_vec(model$agents, \(a) as.numeric(a$opinions))),
-    Stubbornness = as.double(map_vec(model$agents, \(a) 1 - as.numeric(a$receptivity))),
+    agent = as.character(vapply(model$agents, 
+                                \(a) a$name, character(1))),
+    Opinions = as.double(vapply(model$agents, 
+                                \(a) as.numeric(a$opinions),
+                                numeric(1))),
+    Stubbornness = as.double(vapply(model$agents, 
+                                    \(a) 
+                                    1 - as.numeric(a$receptivity), numeric(1))),
     label = label
   )
   

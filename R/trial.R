@@ -56,14 +56,19 @@ Trial <- R6::R6Class(
       repeat {
         # --- run one model step ---
         # Partner selection and interaction with selected partner.
+        # print(map(self$model$agents, \(a) a$opinions))
+        # print(map(self$model$agents, \(a) a$next_opinions))
+        
         for (agent in self$model$agents) {
           partner <- NULL
           if (!is.null(partner_selection)) {
             partner <- partner_selection(agent, self$model)
           }
+          print(partner)
           interaction(agent, partner, self$model)
         }
-        
+        # print(map(self$model$agents, \(a) a$opinions))
+        # print(map(self$model$agents, \(a) a$next_opinions))
         # Run model step function if provided.
         if (!is.null(model_step)) {
           model_step(self$model)
@@ -98,6 +103,8 @@ Trial <- R6::R6Class(
         
         self$outcomes$fixation_steps <- step
       }
+      
+      
       
       return(invisible(self))
     },
@@ -155,7 +162,17 @@ fixated <- function(model) {
 }
 
 
-opinion <- function(eps = 1e-6, k = 10) {
+
+#' Predicate function: have agent opinions converged?
+#'
+#' @param eps 
+#' @param k 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+opinion_convergence <- function(eps = 1e-6, k = 10) {
   prev_opinions <- NULL
   recent_small <- integer(0)  # stores booleans
   function(model) {
@@ -180,13 +197,12 @@ opinion <- function(eps = 1e-6, k = 10) {
 }
 
 
-
 #' Trial runner helper function
 #'
 #' @param model An AgentBasedModel
 #' @param stop Stopping condition: max steps (int) or predicate function
-#' @param adaptive_behavior The behavior treated as "adaptation success". Default is "Adaptive".
-#' @param adaptive_behavior The behavior treated as "adaptation success". Default is "Adaptive".
+#' @param adaptive_behavior The behavior used as unsustainable legacy behavior
+#' @param adaptive_behavior The behavior used as sustainable adaptive behavior
 #' @return A Trial object
 #' @examples
 #' agents <- c(

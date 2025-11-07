@@ -315,7 +315,7 @@ make_opinion_abm <- function (parameters = NULL, agents = NULL, init_mean = 0.0,
       \(i, nm) {
         OpinionAgent$new(id = i, name = nm, 
                          init_op_mean = init_mean, 
-                         init_op_sd = init_sd)
+                         init_op_sd = init_sd, cultural_complexity = 1)
       }
     )
   } else {
@@ -326,9 +326,8 @@ make_opinion_abm <- function (parameters = NULL, agents = NULL, init_mean = 0.0,
   }
   
   return (
-    AgentBasedModel$new(
-      parameters = parameters,
-      agents = agents
+    make_abm(
+      agents = agents, model_dynamics = opinion_dynamics
     )
   )
 }

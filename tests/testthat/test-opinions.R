@@ -55,8 +55,34 @@ test_that("opinion updates work correctly", {
 })
 
 
-test_that("Trials with opinion ABMs run as expected", {
+test_that("Trial with opinion ABMs runs as expected (via run_trial)", {
+  
+  
+  agents <- c(OpinionAgent$new(id = 1, init_opinions = c(0.0)),
+              OpinionAgent$new(id = 2, init_opinions = c(1.0)),
+              OpinionAgent$new(id = 3, init_opinions = c(-1.0)))
+  
+  abm <- make_opinion_abm(agents = agents)
+  abm_agents <- abm$agents
+  a1 <- abm$agents[[1]]
+  a2 <- abm$agents[[2]]
+  a3 <- abm$agents[[3]]
+  
+  expect_equal(a1$opinions, c(0.0))
+  expect_equal(a2$opinions, c(1.0))
+  expect_equal(a3$opinions, c(-1.0))
+  
+  expect_equal(length(abm$agents), 3)
+  
+  trial <- run_trial(abm, observer = new_opinion_observer(), 
+                     stop = 10)
+})
+
+
+test_that("run_trials with opinion ABMs run as expected", {
+  
   abm <- make_opinion_abm(n_agents = 3, init_mean = 0.0, init_sd = 0.25)
+  
   expect_equal(length(abm$agents), 3)
   
   
