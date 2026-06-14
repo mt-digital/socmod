@@ -28,10 +28,10 @@ defining models of social behavior.
 
 You can install the development version of socmod from
 [GitHub](https://github.com/) with `remotes` ([plan to be CRAN-ready
-soon](https://github.com/SocSci-for-Sustainability/socmod/issues/25)):
+soon](https://github.com/mt-digital/socmod/issues/25)):
 
 ``` r
-remotes::install_github("SocSci-for-Sustainability/socmod")
+remotes::install_github("mt-digital/socmod")
 ```
 
 #### Load libraries (install if necessary using `install.packages`)
@@ -49,15 +49,15 @@ library(socmod)
 
 ``` r
 # Create an example agent-based model with success-biased learning...
-abm <- 
+abm <-
   make_abm(graph = make_regular_lattice(10, 4)) %>%
-  # Initialize 20% (2) agents with Adaptive behavior w/ 
+  # Initialize 20% (2) agents with Adaptive behavior w/
   # adaptive fitness 1.125x the non-adaptive Legacy behavior
   initialize_agents(initial_prevalence = 0.2, adaptive_fitness = 1.125)
 
 # Inspect the initialization to ensure 2 agents do Adaptive
 p <- plot_network_adoption(
-  abm, layout = igraph::in_circle(), 
+  abm, layout = igraph::in_circle(),
   plot_mod = \(p) p + ggtitle("Adoption at t = 0"), edgewidth = 0.75
 )
 ```
@@ -66,11 +66,11 @@ p <- plot_network_adoption(
 
 ``` r
 # Run and visualize a single trial, add title with f_A
-p_prevalence <- 
+p_prevalence <-
   make_abm(graph = make_regular_lattice(10, 4)) %>%
   initialize_agents(initial_prevalence = 0.2, adaptive_fitness = 1.125) %>%
   run_trial %>%
-  plot_prevalence(tracked_behaviors = c("Adaptive")) %>% 
+  plot_prevalence(tracked_behaviors = c("Adaptive")) %>%
   { . + ggplot2::ggtitle("Adaptive fitness = 1.125") }
 ```
 
@@ -120,7 +120,7 @@ trials <-
 # Summarize within trials only; rename and factor adaptive fitness for display
 summary <- summarise_prevalence(
   trials, input_parameters = "adaptive_fitness", across_trials = F
-) %>% 
+) %>%
   dplyr::mutate(
     `Adaptive fitness` = factor(adaptive_fitness, adaptive_fitness_vals)
   )
@@ -163,7 +163,7 @@ trials <-
 Let’s confirm we have 160 trials:
 
 ``` r
-length(trials) == 160 
+length(trials) == 160
 #> TRUE
 ```
 
@@ -172,10 +172,10 @@ values:
 
 ``` r
 outcomes <- summarise_outcomes(
-  trials, 
-  input_parameters = "adaptive_fitness", 
+  trials,
+  input_parameters = "adaptive_fitness",
   outcome_measures = c("success_rate", "mean_fixation_steps")
-) 
+)
 
 max_fix_time <- max(outcomes$Value[outcomes$Measure == "mean_fixation_steps"])
 # Normalize to calculate mean fixation time as a fraction of maximum
@@ -195,7 +195,7 @@ outcomes_norm$Measure <- factor(outcomes_norm$Measure, levels = c(
 line_color <- SOCMOD_PALETTE_CVD["pink"]
 outcomes_norm %>%
   ggplot2::ggplot(aes(x = adaptive_fitness, y = Value, linetype = Measure)) +
-  geom_line(color = line_color, linewidth=1.5) + 
+  geom_line(color = line_color, linewidth=1.5) +
   scale_x_continuous(breaks = adaptive_fitness_vals) +
   theme_classic(base_size = 16) + xlab("Adaptive fitness") + ylab("Value")
 ```
